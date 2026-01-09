@@ -1,0 +1,99 @@
+/* GLOBAL HEIGHT FIX */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  min-height: 100vh;   /* FULL SCREEN HEIGHT */
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background-color: #4c4c4c;
+  color: #E5E7EB;
+  min-height: 100vh;   /* TOP TO BOTTOM */
+  padding: 20px;
+}
+
+/* TALLY BUTTON */
+.sidebar-title {
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* MENU */
+.menu a {
+  display: block;
+  padding: 10px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: #E5E7EB;
+  border-radius: 6px;
+}
+
+/* HOVER */
+.menu a:hover {
+  background-color: #494a4b;
+}
+
+/* ACTIVE MENU */
+.menu a.active {
+  background-color: #232424;
+  color: white;
+}
+
+/* MAIN CONTENT */
+.content {
+  flex: 1;
+  background-color: #F3F4F6;
+}
+
+/* HEADER */
+.header {
+  background-color: #E5E7EB;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* CARD */
+.card {
+  background-color: white;
+  margin: 20px;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+/* FORM */
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #D1D5DB;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #3f4041;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

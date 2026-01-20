@@ -6,6 +6,8 @@ export default function CreateCompany() {
   const { setCompany } = useContext(AppContext);
   const navigate = useNavigate();
 
+  const [error, setError] = useState("");
+
   const [companyData, setCompanyData] = useState({
     companyName: "",
     mailingName: "",
@@ -18,7 +20,9 @@ export default function CreateCompany() {
     financialYear: "",
     booksFrom: "",
     currency: "INR",
-    maintainAccounts: "Accounts Only"
+    maintainAccounts: "Accounts Only",
+    gstApplicable: "No",
+    gstNumber: ""
   });
 
   const states = [
@@ -41,7 +45,37 @@ export default function CreateCompany() {
     });
   };
 
+  const validateForm = () => {
+    if (!companyData.companyName.trim()) {
+      setError("Company Name is required");
+      return false;
+    }
+
+    if (!companyData.state) {
+      setError("Please select a State");
+      return false;
+    }
+
+    if (!companyData.financialYear) {
+      setError("Please select Financial Year");
+      return false;
+    }
+
+    if (
+      companyData.gstApplicable === "Yes" &&
+      !companyData.gstNumber.trim()
+    ) {
+      setError("GST Number is required when GST is applicable");
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
+
   const handleSubmit = () => {
+    if (!validateForm()) return;
+
     setCompany(companyData);
     navigate("/ledger");
   };
@@ -50,7 +84,19 @@ export default function CreateCompany() {
     <div className="card">
       <h3>Create Company</h3>
 
-      <label>Company Name</label>
+      {error && (
+        <div style={{
+          background: "#FEE2E2",
+          color: "#991B1B",
+          padding: "10px",
+          borderRadius: "6px",
+          marginBottom: "10px"
+        }}>
+          {error}
+        </div>
+      )}
+
+      <label>Company Name *</label>
       <input
         name="companyName"
         placeholder="Company Name"
@@ -75,20 +121,12 @@ export default function CreateCompany() {
       />
 
       <label>Country</label>
-      <select
-        name="country"
-        value={companyData.country}
-        onChange={handleChange}
-      >
+      <select name="country" value={companyData.country} onChange={handleChange}>
         <option value="India">India</option>
       </select>
 
-      <label>State</label>
-      <select
-        name="state"
-        value={companyData.state}
-        onChange={handleChange}
-      >
+      <label>State *</label>
+      <select name="state" value={companyData.state} onChange={handleChange}>
         <option value="">Select State</option>
         {states.map((state) => (
           <option key={state} value={state}>
@@ -105,7 +143,7 @@ export default function CreateCompany() {
         onChange={handleChange}
       />
 
-      <label>Phone Number</label>
+      <label>Phone</label>
       <input
         name="phone"
         placeholder="Phone Number"
@@ -121,7 +159,7 @@ export default function CreateCompany() {
         onChange={handleChange}
       />
 
-      <label>Financial Year From</label>
+      <label>Financial Year From *</label>
       <input
         type="date"
         name="financialYear"
@@ -138,11 +176,7 @@ export default function CreateCompany() {
       />
 
       <label>Base Currency</label>
-      <select
-        name="currency"
-        value={companyData.currency}
-        onChange={handleChange}
-      >
+      <select name="currency" value={companyData.currency} onChange={handleChange}>
         <option value="INR">INR</option>
       </select>
 
@@ -155,6 +189,28 @@ export default function CreateCompany() {
         <option>Accounts Only</option>
         <option>Accounts with Inventory</option>
       </select>
+
+      <label>GST Applicable</label>
+      <select
+        name="gstApplicable"
+        value={companyData.gstApplicable}
+        onChange={handleChange}
+      >
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      {companyData.gstApplicable === "Yes" && (
+        <>
+          <label>GST Number *</label>
+          <input
+            name="gstNumber"
+            placeholder="15-digit GST Number"
+            value={companyData.gstNumber}
+            onChange={handleChange}
+          />
+        </>
+      )}
 
       <button onClick={handleSubmit}>Create Company</button>
     </div>

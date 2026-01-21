@@ -6,6 +6,7 @@ import CreateCompany from "./pages/CreateCompany";
 import Ledger from "./pages/Ledger";
 import Inventory from "./pages/Inventory";
 import Voucher from "./pages/Voucher";
+import Reports from "./pages/Reports";
 
 // CRM
 import Leads from "./pages/crm/Leads";
@@ -59,6 +60,18 @@ export default function App() {
                 <RequireCompany>
                   <RequireLedger>
                     <Voucher />
+                  </RequireLedger>
+                </RequireCompany>
+              }
+            />
+
+            {/* ✅ REPORTS */}
+            <Route
+              path="/reports"
+              element={
+                <RequireCompany>
+                  <RequireLedger>
+                    <Reports />
                   </RequireLedger>
                 </RequireCompany>
               }

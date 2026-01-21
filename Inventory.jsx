@@ -5,24 +5,106 @@ import { useNavigate } from "react-router-dom";
 export default function Inventory() {
   const { setInventory } = useContext(AppContext);
   const navigate = useNavigate();
-  const [item, setItem] = useState({});
 
-  const saveItem = () => {
-    setInventory(prev => [...prev, item]);
-    navigate("/voucher");
+  const [data, setData] = useState({
+    stockGroup: "",
+    itemName: "",
+    openingQty: "",
+    unit: "",
+    purchasePrice: "",
+    sellingPrice: "",
+    gstRate: ""
+  });
+
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = () => {
+    // 🔒 Required field validation
+    if (
+      !data.stockGroup ||
+      !data.itemName ||
+      !data.openingQty ||
+      !data.unit ||
+      !data.purchasePrice
+    ) {
+      alert("Please fill all required inventory fields (*)");
+      return;
+    }
+
+    setInventory((prev) => [...prev, data]);
+    navigate("/voucher"); // next ERP step
   };
 
   return (
     <div className="card">
-      <h3>Inventory</h3>
+      {/* ✅ HEADING (same as Ledger) */}
+      <h3>Create Inventory</h3>
 
-      <input placeholder="Stock Group" onChange={e=>setItem({...item,group:e.target.value})}/>
-      <input placeholder="Item Name" onChange={e=>setItem({...item,name:e.target.value})}/>
-      <input placeholder="Opening Qty" onChange={e=>setItem({...item,qty:+e.target.value})}/>
-      <input placeholder="Rate" onChange={e=>setItem({...item,rate:+e.target.value})}/>
-      <input placeholder="GST %" onChange={e=>setItem({...item,gst:+e.target.value})}/>
+      <label>Stock Group *</label>
+      <input
+        name="stockGroup"
+        placeholder="Eg: Electronics / Grocery"
+        value={data.stockGroup}
+        onChange={handleChange}
+      />
 
-      <button onClick={saveItem}>Save Inventory</button>
+      <label>Item Name *</label>
+      <input
+        name="itemName"
+        placeholder="Eg: Mobile / Laptop"
+        value={data.itemName}
+        onChange={handleChange}
+      />
+
+      <label>Opening Quantity *</label>
+      <input
+        type="number"
+        name="openingQty"
+        placeholder="Opening Quantity"
+        value={data.openingQty}
+        onChange={handleChange}
+      />
+
+      <label>Unit *</label>
+      <select name="unit" value={data.unit} onChange={handleChange}>
+        <option value="">Select Unit</option>
+        <option>Nos</option>
+        <option>Kgs</option>
+        <option>Litres</option>
+        <option>Pcs</option>
+      </select>
+
+      <label>Purchase Price *</label>
+      <input
+        type="number"
+        name="purchasePrice"
+        placeholder="Purchase Price"
+        value={data.purchasePrice}
+        onChange={handleChange}
+      />
+
+      <label>Selling Price</label>
+      <input
+        type="number"
+        name="sellingPrice"
+        placeholder="Selling Price"
+        value={data.sellingPrice}
+        onChange={handleChange}
+      />
+
+      <label>GST Rate (%)</label>
+      <select name="gstRate" value={data.gstRate} onChange={handleChange}>
+        <option value="">Select GST</option>
+        <option>0</option>
+        <option>5</option>
+        <option>12</option>
+        <option>18</option>
+        <option>28</option>
+      </select>
+
+      <button onClick={handleSubmit}>Save Inventory</button>
     </div>
   );
 }
